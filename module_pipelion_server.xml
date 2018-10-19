@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_pipelion_server" default="compile.module.pipelion_server">
+  <dirname property="module.pipelion_server.basedir" file="${ant.file.module_pipelion_server}"/>
+  
+  <property name="module.jdk.home.pipelion_server" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.pipelion_server" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.pipelion_server" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.pipelion_server" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="pipelion_server.output.dir" value="${module.pipelion_server.basedir}/out/production/pipelion_server"/>
+  <property name="pipelion_server.testoutput.dir" value="${module.pipelion_server.basedir}/out/test/pipelion_server"/>
+  
+  <path id="pipelion_server.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="pipelion_server.module.production.classpath">
+    <path refid="${module.jdk.classpath.pipelion_server}"/>
+    <pathelement location="${basedir}/libs/gson-2.8.2.jar"/>
+  </path>
+  
+  <path id="pipelion_server.runtime.production.module.classpath">
+    <pathelement location="${pipelion_server.output.dir}"/>
+    <pathelement location="${basedir}/libs/gson-2.8.2.jar"/>
+  </path>
+  
+  <path id="pipelion_server.module.classpath">
+    <path refid="${module.jdk.classpath.pipelion_server}"/>
+    <pathelement location="${pipelion_server.output.dir}"/>
+    <pathelement location="${basedir}/libs/gson-2.8.2.jar"/>
+  </path>
+  
+  <path id="pipelion_server.runtime.module.classpath">
+    <pathelement location="${pipelion_server.testoutput.dir}"/>
+    <pathelement location="${pipelion_server.output.dir}"/>
+    <pathelement location="${basedir}/libs/gson-2.8.2.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.pipelion_server">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.pipelion_server">
+    <patternset refid="excluded.from.module.pipelion_server"/>
+  </patternset>
+  
+  <path id="pipelion_server.module.sourcepath">
+    <dirset dir="${module.pipelion_server.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.pipelion_server" depends="compile.module.pipelion_server.production,compile.module.pipelion_server.tests" description="Compile module pipelion_server"/>
+  
+  <target name="compile.module.pipelion_server.production" depends="register.custom.compilers" description="Compile module pipelion_server; production classes">
+    <mkdir dir="${pipelion_server.output.dir}"/>
+    <javac2 destdir="${pipelion_server.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.pipelion_server}/javac">
+      <compilerarg line="${compiler.args.pipelion_server}"/>
+      <bootclasspath refid="pipelion_server.module.bootclasspath"/>
+      <classpath refid="pipelion_server.module.production.classpath"/>
+      <src refid="pipelion_server.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pipelion_server"/>
+    </javac2>
+    
+    <copy todir="${pipelion_server.output.dir}">
+      <fileset dir="${module.pipelion_server.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.pipelion_server.tests" depends="register.custom.compilers,compile.module.pipelion_server.production" description="compile module pipelion_server; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.pipelion_server" description="cleanup module">
+    <delete dir="${pipelion_server.output.dir}"/>
+    <delete dir="${pipelion_server.testoutput.dir}"/>
+  </target>
+</project>
