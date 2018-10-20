@@ -29,6 +29,11 @@ public class AssetsHandler implements HttpHandler {
 
         try {
             JsonObject reqBody = new Gson().fromJson(new InputStreamReader(exchange.getRequestBody()), JsonObject.class);
+            //lets code run with default values if no request body is given
+            if (reqBody == null) {
+                reqBody = new JsonObject();
+            }
+
             int howMany = 10;
             if (reqBody.has("howMany")) {
                 howMany = reqBody.get("howMany").getAsInt();
