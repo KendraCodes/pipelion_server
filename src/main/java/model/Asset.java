@@ -6,13 +6,12 @@ import java.util.List;
 /**
  * Created by Kendra on 10/18/2018.
  */
-public class Asset implements Comparable<Asset> {
+public class Asset extends SortableByTime {
     String id;
     String thumbnail;
     String name;
     List<String> postIDs;
     List<String> departments;
-    String timestamp;
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
@@ -38,12 +37,4 @@ public class Asset implements Comparable<Asset> {
         return departments;
     }
 
-    public ZonedDateTime getTimestamp() {
-        return DartUtils.convertFromDartDate(timestamp);
-    }
-
-    @Override
-    public int compareTo(Asset a) {
-        return getTimestamp().compareTo(a.getTimestamp());
-    }
 }

@@ -41,9 +41,9 @@ public class AssetsDAO {
 
     public List<Asset> getAssets(int howMany, String[] departmentFilters) {
         List<Asset> assets = getFilteredAssets(departmentFilters);
-        int startIdx = assets.size() - howMany;
-        startIdx = startIdx < 0 ? 0 : startIdx;
-        return assets.subList(startIdx, assets.size());
+        int endIdx = howMany;
+        endIdx = endIdx > assets.size() ? assets.size() : endIdx;
+        return assets.subList(0, endIdx);
     }
 
     public List<Asset> getAssets(int howMany, String[] departmentFilters, String startingID) {
@@ -52,9 +52,9 @@ public class AssetsDAO {
         for (Asset a : assets) {
             assetsMap.put(a.getId(), a);
         }
-        int endIdx = assets.indexOf(assetsMap.get(startingID));
-        int startIdx = endIdx - howMany;
-        startIdx = startIdx < 0 ? 0 : startIdx;
+        int startIdx = assets.indexOf(assetsMap.get(startingID)) + 1;
+        int endIdx = startIdx + howMany;
+        endIdx = endIdx > assets.size() ? assets.size() : endIdx;
         return assets.subList(startIdx, endIdx);
     }
 

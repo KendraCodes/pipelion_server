@@ -5,7 +5,7 @@ import java.time.ZonedDateTime;
 /**
  * Created by Kendra on 10/18/2018.
  */
-public class Post implements Comparable<Post> {
+public class Post extends SortableByTime {
     String id;
     String artistID;
     String artistName;
@@ -14,7 +14,6 @@ public class Post implements Comparable<Post> {
     ContentAPI contentAPI;
     String contentID;
     String department;
-    String timestamp;
     String slackLink;
     String slackMessage;
 
@@ -50,10 +49,6 @@ public class Post implements Comparable<Post> {
         return department;
     }
 
-    public ZonedDateTime getTimestamp() {
-        return DartUtils.convertFromDartDate(timestamp);
-    }
-
     public String getSlackLink() {
         return slackLink;
     }
@@ -62,8 +57,4 @@ public class Post implements Comparable<Post> {
         return slackMessage;
     }
 
-    @Override
-    public int compareTo(Post p) {
-        return getTimestamp().compareTo(p.getTimestamp());
-    }
 }
