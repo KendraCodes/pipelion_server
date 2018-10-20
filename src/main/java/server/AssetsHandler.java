@@ -1,14 +1,20 @@
 package server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.MalformedJsonException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import database.AssetsDAO;
 import model.Asset;
 import model.JsonUtils;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.util.List;
+
 
 /**
  * Created by Kendra on 10/18/2018.
@@ -16,21 +22,33 @@ import java.util.List;
 public class AssetsHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        //DONE - return a json list of all assets regardless of input
-        //DONE - sort the list of assets by last updated (will be a data member)
-        //TODO - return the right number of them based on howMany
-        //TODO - return starting at correct index
-        //TODO - return starting with correct id
-        //TODO - if someone says both id and index or neither return an error
-        //TODO - make filters actually do something
 
+        // getAssets, sorted, filtered by department (OR all the options)
+        // tell me how many you want, optional: which id to start with and department filters
+        // body { id: "id_of_thing" or null, howMany: 5, departmentFilters = [ "one", "two" ] }
 
-//        getAssets, sorted, filtered by:
-//        - department
-//        and give me an index and how many you want, or an ID and how many I want
-        // body { index: 4 or -1, id: "id_of_thing" or null, howMany: 5, departmentFilters = [ "one", "two" ] }
-        List<Asset> assets = new AssetsDAO().getAllAssets();
-        byte[] data = JsonUtils.prettyPrintJson(assets).getBytes();
-        PipelionServer.sendResponse(exchange, 200, data);
+        try {
+            JsonObject reqBody = new Gson().fromJson(new InputStreamReader(exchange.getRequestBody()), JsonObject.class);
+            int howMany = 10;
+            if (reqBody.has("howMany")) {
+                howMany = reqBody.get("howMany").getAsInt();
+            }
+            String[] departments = {};
+            if (reqBody.has("departmentFilters")) {
+                departments = new Gson().fromJson(reqBody.get("departmentFilters"), String[].class);
+            }
+
+            List<Asset> assets;
+            String id = reqBody.has("id") ? reqBody.get("id").getAsString() : null;
+            if (id != null && id.length() > 0) {
+                assets = new AssetsDAO().getAssets(howMany, departments, id);
+            } else {
+                assets = new AssetsDAO().getAssets(howMany, departments);
+            }
+            PipelionServer.sendResponse(exchange, 200, JsonUtils.prettyPrintJson(assets));
+        } catch (Exception e) {
+            e.printStackTrace();
+            PipelionServer.sendResponse(exchange, HttpURLConnection.HTTP_BAD_REQUEST, "Bad Request");
+        }
     }
 }
