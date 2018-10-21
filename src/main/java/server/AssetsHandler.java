@@ -28,24 +28,14 @@ public class AssetsHandler implements HttpHandler {
         // body { id: "id_of_thing" or null, howMany: 5, departmentFilters = [ "one", "two" ] }
 
         try {
-            JsonObject reqBody = new Gson().fromJson(new InputStreamReader(exchange.getRequestBody()), JsonObject.class);
-            //lets code run with default values if no request body is given
-            if (reqBody == null) {
-                reqBody = new JsonObject();
-            }
+            JsonObject reqBody = PipelionServer.getRequestBody(exchange);
 
-            int howMany = 10;
-            if (reqBody.has("howMany")) {
-                howMany = reqBody.get("howMany").getAsInt();
-            }
-            String[] departments = {};
-            if (reqBody.has("departmentFilters")) {
-                departments = new Gson().fromJson(reqBody.get("departmentFilters"), String[].class);
-            }
-
+            int howMany = PipelionServer.getChunkValue(reqBody);
+            String[] departments = PipelionServer.getStringArray(reqBody, "departmentFilters");
+            String id = PipelionServer.getID(reqBody);
+            
             List<Asset> assets;
-            String id = reqBody.has("id") ? reqBody.get("id").getAsString() : null;
-            if (id != null && id.length() > 0) {
+            if (id != null) {
                 assets = new AssetsDAO().getAssets(howMany, departments, id);
             } else {
                 assets = new AssetsDAO().getAssets(howMany, departments);

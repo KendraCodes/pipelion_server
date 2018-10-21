@@ -1,9 +1,12 @@
 package server;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
@@ -88,6 +91,42 @@ public class PipelionServer {
 
     public static void sendResponse(HttpExchange exchange, int code, String msg) {
         sendResponse(exchange, code, msg.getBytes());
+    }
+
+    public static JsonObject getRequestBody(HttpExchange exchange) {
+        JsonObject reqBody = new Gson().fromJson(new InputStreamReader(exchange.getRequestBody()), JsonObject.class);
+        //lets code run with default values if no request body is given
+        if (reqBody == null)
+            return new JsonObject();
+        else
+            return reqBody;
+    }
+
+    public static int getChunkValue(JsonObject jsonObj) {
+        if (jsonObj.has("howMany")) {
+            return jsonObj.get("howMany").getAsInt();
+        } else {
+            return 10;
+        }
+    }
+
+    public static String[] getStringArray(JsonObject jsonObj, String name) {
+        if (jsonObj.has(name)) {
+            return new Gson().fromJson(jsonObj.get(name), String[].class);
+        } else {
+            String[] retVal = {};
+            return retVal;
+        }
+    }
+
+    public static String getID(JsonObject jsonObj) {
+        String id = null;
+        if (jsonObj.has("id")) {
+            id = jsonObj.get("id").getAsString();
+            if (id.length() == 0)
+                id = null;
+        }
+        return id;
     }
 
 }

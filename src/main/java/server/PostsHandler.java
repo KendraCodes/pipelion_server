@@ -31,29 +31,17 @@ public class PostsHandler implements HttpHandler {
         //  departmentFilters = [ "one" ], artistFilters = [ "two" ], assetFilters = [ "three" ]
 
         try {
-            JsonObject reqBody = new Gson().fromJson(new InputStreamReader(exchange.getRequestBody()), JsonObject.class);
-            //lets code run with default values if no request body is given
-            if (reqBody == null)
-                reqBody = new JsonObject();
+            JsonObject reqBody = PipelionServer.getRequestBody(exchange);
+            int howMany = PipelionServer.getChunkValue(reqBody);
+            String id = PipelionServer.getID(reqBody);
 
-            int howMany = 10;
-            if (reqBody.has("howMany")) {
-                howMany = reqBody.get("howMany").getAsInt();
-            }
             PostFilters filters = new PostFilters();
-            if (reqBody.has("departmentFilters")) {
-                filters.departments = new Gson().fromJson(reqBody.get("departmentFilters"), String[].class);
-            }
-            if (reqBody.has("artistFilters")) {
-                filters.artists = new Gson().fromJson(reqBody.get("artistFilters"), String[].class);
-            }
-            if (reqBody.has("assetFilters")) {
-                filters.assets = new Gson().fromJson(reqBody.get("assetFilters"), String[].class);
-            }
+            filters.departments = PipelionServer.getStringArray(reqBody, "departmentFilters");
+            filters.artists = PipelionServer.getStringArray(reqBody, "artistFilters");
+            filters.assets = PipelionServer.getStringArray(reqBody, "assetFilters");
 
             List<Post> posts;
-            String id = reqBody.has("id") ? reqBody.get("id").getAsString() : null;
-            if (id != null && id.length() > 0) {
+            if (id != null) {
                 posts = new PostsDAO().getPosts(howMany, filters, id);
             } else {
                 posts = new PostsDAO().getPosts(howMany, filters);
