@@ -32,7 +32,7 @@ public class AssetsHandler implements HttpHandler {
 
             int howMany = PipelionServer.getChunkValue(reqBody);
             String[] departments = PipelionServer.getStringArray(reqBody, "departmentFilters");
-            String id = PipelionServer.getID(reqBody);
+            String id = PipelionServer.getString(reqBody, "id");
             
             List<Asset> assets;
             if (id != null) {

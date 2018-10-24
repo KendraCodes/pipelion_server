@@ -119,10 +119,10 @@ public class PipelionServer {
         }
     }
 
-    public static String getID(JsonObject jsonObj) {
+    public static String getString(JsonObject jsonObj, String str) {
         String id = null;
-        if (jsonObj.has("id")) {
-            id = jsonObj.get("id").getAsString();
+        if (jsonObj.has(str)) {
+            id = jsonObj.get(str).getAsString();
             if (id.length() == 0)
                 id = null;
         }

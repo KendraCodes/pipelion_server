@@ -33,7 +33,7 @@ public class PostsHandler implements HttpHandler {
         try {
             JsonObject reqBody = PipelionServer.getRequestBody(exchange);
             int howMany = PipelionServer.getChunkValue(reqBody);
-            String id = PipelionServer.getID(reqBody);
+            String id = PipelionServer.getString(reqBody, "id");
 
             PostFilters filters = new PostFilters();
             filters.departments = PipelionServer.getStringArray(reqBody, "departmentFilters");

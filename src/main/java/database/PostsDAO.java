@@ -1,5 +1,6 @@
 package database;
 
+import com.google.gson.JsonObject;
 import model.Asset;
 import model.JsonUtils;
 import model.Post;

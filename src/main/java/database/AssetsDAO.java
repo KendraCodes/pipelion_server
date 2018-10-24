@@ -39,15 +39,7 @@ public class AssetsDAO {
         return assets;
     }
 
-    public List<Asset> getAssets(int howMany, String[] departmentFilters) {
-        List<Asset> assets = getFilteredAssets(departmentFilters);
-        int endIdx = howMany;
-        endIdx = endIdx > assets.size() ? assets.size() : endIdx;
-        return assets.subList(0, endIdx);
-    }
-
-    public List<Asset> getAssets(int howMany, String[] departmentFilters, String startingID) {
-        List<Asset> assets = getFilteredAssets(departmentFilters);
+    private List<Asset> getIdSublist(List<Asset> assets, int howMany, String startingID) {
         HashMap<String, Asset> assetsMap = new HashMap<>();
         for (Asset a : assets) {
             assetsMap.put(a.getId(), a);
@@ -58,6 +50,18 @@ public class AssetsDAO {
         return assets.subList(startIdx, endIdx);
     }
 
+    private List<Asset> getSublist(List<Asset> assets, int howMany) {
+        int endIdx = howMany;
+        endIdx = endIdx > assets.size() ? assets.size() : endIdx;
+        return assets.subList(0, endIdx);
+    }
 
+    public List<Asset> getAssets(int howMany, String[] departmentFilters) {
+        return getSublist(getFilteredAssets(departmentFilters), howMany);
+    }
+
+    public List<Asset> getAssets(int howMany, String[] departmentFilters, String startingID) {
+        return getIdSublist(getFilteredAssets(departmentFilters), howMany, startingID);
+    }
 
 }
