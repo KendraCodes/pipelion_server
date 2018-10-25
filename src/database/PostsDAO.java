@@ -30,23 +30,55 @@ public class PostsDAO {
         return posts;
     }
 
-    public List<Post> getPosts(int howMany, PostFilters filters) {
-        List<Post> posts = getFilteredPosts(filters);
-        int endIdx = howMany;
-        endIdx = endIdx > posts.size() ? posts.size() : endIdx;
-        return posts.subList(0, endIdx);
-    }
-
-    public List<Post> getPosts(int howMany, PostFilters filters, String startingID) {
-        List<Post> posts = getFilteredPosts(filters);
+    private List<Post> getIdSublist(List<Post> posts, int howMany, String startingID) {
         HashMap<String, Post> postsMap = new HashMap<>();
-        for (Post p : posts) {
-            postsMap.put(p.getId(), p);
+        for (Post a : posts) {
+            postsMap.put(a.getId(), a);
         }
         int startIdx = posts.indexOf(postsMap.get(startingID)) + 1;
         int endIdx = startIdx + howMany;
         endIdx = endIdx > posts.size() ? posts.size() : endIdx;
         return posts.subList(startIdx, endIdx);
+    }
+
+    private List<Post> getSublist(List<Post> posts, int howMany) {
+        int endIdx = howMany;
+        endIdx = endIdx > posts.size() ? posts.size() : endIdx;
+        return posts.subList(0, endIdx);
+    }
+
+    public List<Post> getPosts(int howMany, PostFilters filters) {
+        return getSublist(getFilteredPosts(filters), howMany);
+    }
+
+    public List<Post> getPosts(int howMany, PostFilters filters, String startingID) {
+        return getIdSublist(getFilteredPosts(filters), howMany, startingID);
+    }
+
+    private List<Post> searchPosts(List<Post> original, String searchTerm) {
+        HashSet<Post> matchesSearch = new HashSet<>();
+        String search = searchTerm.toLowerCase();
+        for (Post p : original) {
+            if (p.getArtistName().toLowerCase().contains(search)) {
+                matchesSearch.add(p);
+            }
+            if (p.getAssetName().toLowerCase().contains(search)) {
+                matchesSearch.add(p);
+            }
+        }
+        List<Post> matchingPosts = new ArrayList<>();
+        matchingPosts.addAll(matchesSearch);
+        return matchingPosts;
+    }
+
+    public List<Post> searchPosts(PostFilters filters, int howMany, String searchTerm) {
+        List<Post> posts = searchPosts(getFilteredPosts(filters), searchTerm);
+        return getSublist(posts, howMany);
+    }
+
+    public List<Post> searchPosts(PostFilters filters, int howMany, String searchTerm, String startingID) {
+        List<Post> posts = searchPosts(getFilteredPosts(filters), searchTerm);
+        return getIdSublist(posts, howMany, startingID);
     }
 
 }

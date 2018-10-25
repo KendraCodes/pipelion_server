@@ -41,13 +41,14 @@ public class PipelionServer {
         //getDepartments - static list. /get/departments, leave flexible to include other info
         server.createContext("/get/", new GetHandler());
 
-//        search - gives me a search term and a chunk OPTIONAL artist: id to give only artists
+//        search - gives me a search term and a chunk
 //                - matching artists, total matches
 //                - matching assets, total matches
 //                - matching posts
         //body { term: "searchTerm", howMany: 5, id: "id of thing" or null }
         //search/[ assets | posts | artists ] body
-        server.createContext("/search/", new SearchHandler());
+        server.createContext("/search/assets", new SearchAssetsHandler());
+        server.createContext("/search/posts", new SearchPostsHandler());
 
         server.createContext("/", new DefaultHandler());
 

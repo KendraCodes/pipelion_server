@@ -64,4 +64,27 @@ public class AssetsDAO {
         return getIdSublist(getFilteredAssets(departmentFilters), howMany, startingID);
     }
 
+    private List<Asset> searchAssets(List<Asset> original, String searchTerm) {
+        HashSet<Asset> matchesSearch = new HashSet<>();
+        String search = searchTerm.toLowerCase();
+        for (Asset a : original) {
+            if (a.getName().toLowerCase().contains(search)) {
+                matchesSearch.add(a);
+            }
+        }
+        List<Asset> matchingAssets = new ArrayList<>();
+        matchingAssets.addAll(matchesSearch);
+        return matchingAssets;
+    }
+
+
+    public List<Asset> searchAssets(String searchTerm, int howMany, String[] departmentFilters, String id) {
+        List<Asset> assets = searchAssets(getFilteredAssets(departmentFilters), searchTerm);
+        return getIdSublist(assets, howMany, id);
+    }
+
+    public List<Asset> searchAssets(String searchTerm, int howMany, String[] departmentFilters) {
+        List<Asset> assets = searchAssets(getFilteredAssets(departmentFilters), searchTerm);
+        return getSublist(assets, howMany);
+    }
 }
