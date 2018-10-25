@@ -49,7 +49,7 @@ public class PipelionServer {
             System.out.print("Contexts initialized\n");
             server.setExecutor(null);
             server.start();
-            System.out.print("server.PipelionServer started");
+            System.out.println("server.PipelionServer started");
         } catch (IOException e) {
             System.out.println("Failed to create server, try a different port");
         }
