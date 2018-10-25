@@ -31,7 +31,7 @@ public class PipelionServer {
         server.createContext("/", new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) throws IOException {
-                sendResponse(exchange, HTTP_OK, "oops");
+                sendResponse(exchange, HTTP_OK, "Hunter wanted a funnier error message");
             }
         });
 
