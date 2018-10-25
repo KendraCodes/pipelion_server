@@ -3,12 +3,15 @@ package server;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
  * Created by Kendra on 10/18/2018.
@@ -19,38 +22,18 @@ public class PipelionServer {
 
     private static void initContexts() {
 
-//        getAssets, sorted, filtered by:
-//        - department
-//        and give me an index and how many you want, or an ID and how many I want
-        // body { index: 4 or -1, id: "id_of_thing" or null, howMany: 5, departmentFilters = [ "one", "two" ] }
         server.createContext("/assets", new AssetsHandler());
-
-
-//        getPosts, sorted, filtered by:
-//        - asset (asset1 OR asset2)
-//        AND
-//                - people (artist1 OR artist2)
-//        AND
-//                - department (department1 OR department2)
-//        and give me an index and how many you want, or an ID and how many I want
-        // body { index: 4 or -1, id: "idThing" or null, howMany: 5,
-        //  departmentFilters = [ "one" ], artistFilters = [ "two" ], assetFilters = [ "three" ]
         server.createContext("/posts", new PostsHandler());
 
-
-        //getDepartments - static list. /get/departments, leave flexible to include other info
+        //handle all other data requests not covered by assets or posts
         server.createContext("/get/", new GetHandler());
 
-//        search - gives me a search term and a chunk
-//                - matching artists, total matches
-//                - matching assets, total matches
-//                - matching posts
-        //body { term: "searchTerm", howMany: 5, id: "id of thing" or null }
-        //search/[ assets | posts | artists ] body
-        server.createContext("/search/assets", new SearchAssetsHandler());
-        server.createContext("/search/posts", new SearchPostsHandler());
-
-        server.createContext("/", new DefaultHandler());
+        server.createContext("/", new HttpHandler() {
+            @Override
+            public void handle(HttpExchange exchange) throws IOException {
+                sendResponse(exchange, HTTP_OK, "oops");
+            }
+        });
 
     }
 
