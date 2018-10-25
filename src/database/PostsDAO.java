@@ -30,6 +30,15 @@ public class PostsDAO {
         return posts;
     }
 
+    public Post getPostById(String postID) {
+        List<Post> posts = getAllPosts();
+        HashMap<String, Post> postsMap = new HashMap<>();
+        for (Post a : posts) {
+            postsMap.put(a.getId(), a);
+        }
+        return postsMap.get(postID);
+    }
+
     private List<Post> getIdSublist(List<Post> posts, int howMany, String startingID) {
         HashMap<String, Post> postsMap = new HashMap<>();
         for (Post a : posts) {
