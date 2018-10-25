@@ -31,6 +31,13 @@ public class PostsHandler implements HttpHandler {
         //  departmentFilters = [ "one" ], artistFilters = [ "two" ], assetFilters = [ "three" ]
 
         try {
+            String[] pieces = exchange.getRequestURI().getPath().substring(1).split("/");
+            if (pieces.length > 1) {
+                Post p = new PostsDAO().getPostById(pieces[1]);
+                PipelionServer.sendResponse(exchange, 200, JsonUtils.prettyPrintJson(p));
+                return;
+            }
+
             JsonObject reqBody = PipelionServer.getRequestBody(exchange);
             int howMany = PipelionServer.getChunkValue(reqBody);
             String id = PipelionServer.getString(reqBody, "id");
