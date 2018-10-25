@@ -288,6 +288,32 @@
       "timestamp": "2018-10-09 17:31:00Z",
       "slackLink": "https://pipelion.slack.com/archives/CCLEGUTJL/p1539304004000100?thread_ts=1539304004.000100&cid=CCLEGUTJL",
       "slackMessage": "So yeah, I just put some extra fur on Grendel's character, does it look okay?"
+    },
+    {
+      "id": "14",
+      "artistID": "KendraGraham",
+      "artistName": "Kendra G.",
+      "assetID": "H3RB678fFH",
+      "assetName": "Grendy",
+      "contentAPI": "SKETCHFAB",
+      "contentID": "693edfba77c44730bd7af90e0afc652b",
+      "department": "Modeling",
+      "timestamp": "2018-10-24 20:13:00Z",
+      "slackLink": "https://pipelion.slack.com/archives/CCLEGUTJL/p1539304004000100?thread_ts=1539304004.000100&cid=CCLEGUTJL",
+      "slackMessage": "Guys, Sketchfab will actually work one day. How exciting is that?"
+    },
+    {
+      "id": "15",
+      "artistID": "KendraGraham",
+      "artistName": "Kendra G.",
+      "assetID": "H3RB678fFH",
+      "assetName": "Grendy",
+      "contentAPI": "CORY_VIDEO",
+      "contentID": "content/ballVikings.mp4",
+      "department": "Modeling",
+      "timestamp": "2018-10-24 20:13:01Z",
+      "slackLink": "https://pipelion.slack.com/archives/CCLEGUTJL/p1539304004000100?thread_ts=1539304004.000100&cid=CCLEGUTJL",
+      "slackMessage": "Guys, Sketchfab will actually work one day. How exciting is that?"
     }
   ],
   "rawUserSettingsMap": {
