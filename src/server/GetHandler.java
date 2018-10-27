@@ -2,7 +2,7 @@ package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import database.DatabaseManager;
+import database.DepartmentsDAO;
 import model.JsonUtils;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class GetHandler implements HttpHandler {
         String[] pieces = exchange.getRequestURI().getPath().substring(1).split("/");
         if (pieces.length >= 2) {
             if (pieces[1].equals("departments")) {
-                List<String> departments = new DatabaseManager().getDepartmentsList();
+                List<String> departments = new DepartmentsDAO().getDepartmentsList();
                 byte[] data = JsonUtils.prettyPrintJson(departments).getBytes();
                 PipelionServer.sendResponse(exchange, 200, data);
                 return;
