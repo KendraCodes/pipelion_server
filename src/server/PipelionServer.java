@@ -22,8 +22,18 @@ public class PipelionServer {
 
     private static void initContexts() {
 
+        server.createContext("/assets/create", new CreateAssetHandler());
         server.createContext("/assets", new AssetsHandler());
+        server.createContext("/posts/publish", new PublishPostHandler());
         server.createContext("/posts", new PostsHandler());
+
+        server.createContext("/artists/add", new AddArtistHandler());
+        server.createContext("/artists/watching", new WatchingHandler());
+
+        server.createContext("/notifications/get", new GetNotificationsHandler());
+        server.createContext("/notifications/update", new UpdateNotificationsHandler());
+
+
 
         //handle all other data requests not covered by assets or posts
         server.createContext("/get/", new GetHandler());
