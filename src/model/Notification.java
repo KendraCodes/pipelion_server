@@ -12,4 +12,23 @@ public class Notification extends SortableByTime {
     String message;
     boolean isSeen;
 
+    public String getId() {
+        return id;
+    }
+
+    public String getArtistID() {
+        return artistID;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public boolean isSeen() {
+        return isSeen;
+    }
 }
