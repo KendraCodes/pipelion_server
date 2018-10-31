@@ -11,7 +11,7 @@ import java.io.IOException;
 public class UpdateNotificationsHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        //TODO update whether a notification is read or unread
+        // update whether a notification is read or unread
         // URL = /notifications/update/[artistID] to mark read or unread
         // { "notification_id", "isRead" } and "notification_id" might be "all"
     }

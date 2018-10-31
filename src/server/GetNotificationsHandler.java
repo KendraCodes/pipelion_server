@@ -11,7 +11,7 @@ import java.io.IOException;
 public class GetNotificationsHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        //TODO return a chunked list of notifications for the artist
+        // return a chunked list of notifications for the artist
         //chunking works just like posts or assets
         // URL = /notifications/get/[artistID]
     }

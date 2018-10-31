@@ -14,10 +14,23 @@ import java.util.*;
  */
 public class AssetsDAO {
 
+    public String getAssetName(String assetID) {
+        //todo
+        return assetID;
+    }
+
     public List<Asset> getAllAssets() {
         //SQL could probably do the start at ___ thing
         return JsonUtils.loadAssets();
     };
+
+    public void updateTime(String assetID, String timestamp) {
+        //todo
+    }
+
+    public void addAsset(Asset a) {
+        //todo
+    }
 
     private List<Asset> getFilteredAssets(String[] departmentFilters) {
         List<Asset> allAssets = JsonUtils.loadAssets();

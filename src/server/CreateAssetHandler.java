@@ -18,6 +18,15 @@ public class CreateAssetHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         //takes an asset object in the request body and adds it to the database
+        try {
+            JsonObject reqBody = PipelionServer.getRequestBody(exchange);
+            new AssetsDAO().addAsset(new Gson().fromJson(reqBody, Asset.class));
+            PipelionServer.sendResponse(exchange, 200, "Succesfully added asset");
+        } catch (Exception e) {
+            e.printStackTrace();
+            PipelionServer.sendResponse(exchange, HttpURLConnection.HTTP_BAD_REQUEST, "Bad Request");
+        }
+
 
     }
 }

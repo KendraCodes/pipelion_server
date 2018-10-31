@@ -39,6 +39,7 @@ public class DatabaseManager {
                     "artistID text not null primary key," +
                     "artistName text not null" +
                     ");";
+            //todo add the artists watching things table
             Connection conn = ConnectionFactory.openConnection();
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(assetsTable);

@@ -21,6 +21,12 @@ public class PostsDAO {
         new PostsDAO().addPost(allPosts);
     }
 
+    public void addPost(Post p) {
+        List<Post> posts = new ArrayList<>();
+        posts.add(p);
+        addPost(posts);
+    }
+
     public void addPost(Collection<Post> posts) {
         try {
             String sql = "insert into Posts values (?,?,?,?,?,?,?,?,?,?,?)";
