@@ -6,12 +6,53 @@ import model.JsonUtils;
 import model.Post;
 import model.PostFilters;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
  * Created by Kendra on 10/18/2018.
  */
 public class PostsDAO {
+
+    public static void main(String[] args) {
+        List<Post> allPosts = new PostsDAO().getAllPosts();
+        new PostsDAO().addPost(allPosts);
+    }
+
+    public void addPost(Post p) {
+        List<Post> posts = new ArrayList<>();
+        posts.add(p);
+        addPost(posts);
+    }
+
+    public void addPost(Collection<Post> posts) {
+        try {
+            String sql = "insert into Posts values (?,?,?,?,?,?,?,?,?,?,?);";
+            Connection connection = ConnectionFactory.openConnection();
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            for (Post p : posts) {
+                stmt.setString(1, p.getId());
+                stmt.setString(2, p.getArtistID());
+                stmt.setString(3, p.getArtistName());
+                stmt.setString(4, p.getAssetID());
+                stmt.setString(5, p.getAssetName());
+                stmt.setString(6, p.getContentAPI().toString());
+                stmt.setString(7, p.getContentID());
+                stmt.setString(8, p.getDepartment());
+                stmt.setString(9, p.getTimestampString());
+                stmt.setString(10, p.getSlackLink());
+                stmt.setString(11, p.getSlackMessage());
+
+                stmt.executeUpdate();
+            }
+            ConnectionFactory.closeConnection(connection, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public List<Post> getAllPosts() {
         return JsonUtils.loadPosts();

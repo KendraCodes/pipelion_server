@@ -9,6 +9,9 @@ public class SortableByTime implements Comparable<SortableByTime> {
     String timestamp;
 
 
+    public String getTimestampString() {
+        return timestamp;
+    }
 
     public ZonedDateTime getTimestamp() {
         return DartUtils.convertFromDartDate(timestamp);

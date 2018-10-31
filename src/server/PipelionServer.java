@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import database.DatabaseManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,8 +23,18 @@ public class PipelionServer {
 
     private static void initContexts() {
 
+        server.createContext("/assets/create", new CreateAssetHandler());
         server.createContext("/assets", new AssetsHandler());
+        server.createContext("/posts/publish", new PublishPostHandler());
         server.createContext("/posts", new PostsHandler());
+
+        server.createContext("/artists/add", new AddArtistHandler());
+        server.createContext("/artists/watching", new WatchingHandler());
+
+        server.createContext("/notifications/get", new GetNotificationsHandler());
+        server.createContext("/notifications/update", new UpdateNotificationsHandler());
+
+
 
         //handle all other data requests not covered by assets or posts
         server.createContext("/get/", new GetHandler());
@@ -38,6 +49,9 @@ public class PipelionServer {
     }
 
     public static void main(String[] args) {
+
+        new DatabaseManager().createTables();
+
         int port = 8113;
         if (args.length == 1) { //allow for port number to be passed in
             port = Integer.parseInt(args[0]);
