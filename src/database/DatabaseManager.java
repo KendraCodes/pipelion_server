@@ -9,11 +9,6 @@ import java.sql.Statement;
  */
 public class DatabaseManager {
 
-    public static void main(String[] args) {
-        new DatabaseManager().createTables();
-    }
-
-
     public void createTables() {
         try {
             String assetsTable = "create table if not exists Assets(" +
@@ -39,12 +34,17 @@ public class DatabaseManager {
                     "artistID text not null primary key," +
                     "artistName text not null" +
                     ");";
-            //todo add the artists watching things table
+            String artistsWatchingTable = "create table if not exists ArtistsWatching(" +
+                    "hash text not null primary key," +
+                    "artistID text not null," +
+                    "assetID text not null" +
+                    ");";
             Connection conn = ConnectionFactory.openConnection();
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(assetsTable);
             stmt.executeUpdate(postsTable);
             stmt.executeUpdate(artistsTable);
+            stmt.executeUpdate(artistsWatchingTable);
             ConnectionFactory.closeConnection(conn, true);
         } catch (SQLException e) {
             e.printStackTrace();

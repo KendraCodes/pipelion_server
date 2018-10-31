@@ -24,6 +24,7 @@ public class PublishPostHandler implements HttpHandler {
             Post p = new Gson().fromJson(reqBody, Post.class);
             new PostsDAO().addPost(p);
             new ArtistsDAO().addArtist(new Artist(p.getArtistID(), p.getArtistName()));
+            new ArtistsDAO().setWatching(p.getArtistID(), p.getAssetID(), true);
             new AssetsDAO().updateTime(p.getAssetID(), p.getTimestampString());
             PipelionServer.sendResponse(exchange, 200, "Successfully published post");
         } catch (Exception e) {

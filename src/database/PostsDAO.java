@@ -29,7 +29,7 @@ public class PostsDAO {
 
     public void addPost(Collection<Post> posts) {
         try {
-            String sql = "insert into Posts values (?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into Posts values (?,?,?,?,?,?,?,?,?,?,?);";
             Connection connection = ConnectionFactory.openConnection();
             PreparedStatement stmt = connection.prepareStatement(sql);
             for (Post p : posts) {
@@ -45,7 +45,7 @@ public class PostsDAO {
                 stmt.setString(10, p.getSlackLink());
                 stmt.setString(11, p.getSlackMessage());
 
-                stmt.execute();
+                stmt.executeUpdate();
             }
             ConnectionFactory.closeConnection(connection, true);
         } catch (SQLException e) {

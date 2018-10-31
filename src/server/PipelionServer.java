@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import database.DatabaseManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,6 +49,9 @@ public class PipelionServer {
     }
 
     public static void main(String[] args) {
+
+        new DatabaseManager().createTables();
+
         int port = 8113;
         if (args.length == 1) { //allow for port number to be passed in
             port = Integer.parseInt(args[0]);

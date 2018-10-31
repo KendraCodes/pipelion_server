@@ -31,7 +31,7 @@ public class WatchingHandler implements HttpHandler {
                     String assetID = jsonObj.get("assetID").getAsString();
                     boolean watching = jsonObj.get("watching").getAsBoolean();
                     new ArtistsDAO().setWatching(artistID, assetID, watching);
-                    String msg = "Artist " + artistID + " is now " + (watching ? "" : "not") + " asset " + assetID;
+                    String msg = "Artist " + artistID + " is now " + (watching ? "" : "not") + " watching asset " + assetID;
                     PipelionServer.sendResponse(exchange, 200, msg);
                 } else {
                     List<String> watching = new ArtistsDAO().getWatchedAssets(pieces[2]);
